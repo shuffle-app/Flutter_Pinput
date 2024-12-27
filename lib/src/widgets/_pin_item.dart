@@ -13,17 +13,22 @@ class _PinItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final pinTheme = _pinTheme(index);
 
-    return Flexible(
-      child: AnimatedContainer(
-        height: pinTheme.height,
-        width: pinTheme.width,
+    return Container(
+      decoration: BoxDecoration(
+        color: pinTheme.decoration?.color,
+        borderRadius: pinTheme.decoration?.borderRadius,
+      ),
+      height: pinTheme.height,
+      width: pinTheme.width,
+      padding: const EdgeInsets.all(4),
+      child: Container(
         constraints: pinTheme.constraints,
         padding: pinTheme.padding,
         margin: pinTheme.margin,
         decoration: pinTheme.decoration,
         alignment: state.widget.pinContentAlignment,
-        duration: state.widget.animationDuration,
-        curve: state.widget.animationCurve,
+        // duration: state.widget.animationDuration,
+        // curve: state.widget.animationCurve,
         child: AnimatedSwitcher(
           switchInCurve: state.widget.animationCurve,
           switchOutCurve: state.widget.animationCurve,
@@ -53,11 +58,9 @@ class _PinItem extends StatelessWidget {
     }
   }
 
-  PinTheme _getDefaultPinTheme() =>
-      state.widget.defaultPinTheme ?? PinputConstants._defaultPinTheme;
+  PinTheme _getDefaultPinTheme() => state.widget.defaultPinTheme ?? PinputConstants._defaultPinTheme;
 
-  PinTheme _pinThemeOrDefault(PinTheme? theme) =>
-      theme ?? _getDefaultPinTheme();
+  PinTheme _pinThemeOrDefault(PinTheme? theme) => theme ?? _getDefaultPinTheme();
 
   Widget _buildFieldContent(int index, PinTheme pinTheme) {
     final pin = state.pin;
@@ -77,10 +80,8 @@ class _PinItem extends StatelessWidget {
     }
 
     final isActiveField = index == pin.length;
-    final focused =
-        state.effectiveFocusNode.hasFocus || !state.widget.useNativeKeyboard;
-    final shouldShowCursor =
-        state.widget.showCursor && state.isEnabled && isActiveField && focused;
+    final focused = state.effectiveFocusNode.hasFocus || !state.widget.useNativeKeyboard;
+    final shouldShowCursor = state.widget.showCursor && state.isEnabled && isActiveField && focused;
 
     if (shouldShowCursor) {
       return _buildCursor(pinTheme);
@@ -128,8 +129,7 @@ class _PinItem extends StatelessWidget {
       case PinAnimationType.slide:
         return SlideTransition(
           position: Tween<Offset>(
-            begin:
-                state.widget.slideTransitionBeginOffset ?? const Offset(0.8, 0),
+            begin: state.widget.slideTransitionBeginOffset ?? const Offset(0.8, 0),
             end: Offset.zero,
           ).animate(animation),
           child: child,

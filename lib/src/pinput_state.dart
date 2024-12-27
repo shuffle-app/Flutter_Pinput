@@ -502,7 +502,13 @@ class _PinputState extends State<Pinput>
             );
           }
 
-          return _PinItem(state: this, index: index);
+          return AnimatedSwitcher(
+            duration: widget.animationDuration,
+            child: _PinItem(
+              state: this,
+              index: index,
+            ),
+          );
         }).toList(),
       );
     }
